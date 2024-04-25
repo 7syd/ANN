@@ -22,3 +22,36 @@ def and_not(x1,x2):
 x1 = [0,0,1,1]
 x2 = [0,1,0,1]
 and_not(x1,x2)
+
+# def and_or(x1, x2):
+#     y = []
+#     w1 = 1
+#     w2 = 1
+#     theta = 1
+
+#     # AND OR Function
+#     for i in range(0, 4):
+#         sum = x1[i] * w1 + x2[i] * w2
+#         if sum >= theta:
+#             y.append(1)
+#         else:
+#             y.append(0)
+
+#     return y
+
+# def xor(x1, x2):
+#     and_output = and_not(x1, x2)
+#     or_output = and_or(x1, x2)
+#     y = []
+#     for i in range(4):
+#         if and_output[i] == 1 or or_output[i] == 1:
+#             y.append(1)
+#         else:
+#             y.append(0)
+#     print(x1)
+#     print(x2)
+#     print(y)
+
+# x1 = [0, 0, 1, 1]
+# x2 = [0, 1, 0, 1]
+# xor(x1, x2)
