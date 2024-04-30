@@ -6,46 +6,41 @@ def sigmoid(x):
 def sigmoid_derivative(x):
     return x * (1 - x)
 
-def forward_propagation(x, wih, bih, who, bho):
-    hidden_output = sigmoid(np.dot(x, wih) + bih)
-    output = sigmoid(np.dot(hidden_output, who) + bho)
-    return hidden_output, output
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+y = np.array([[0], [1], [1], [0]])
 
-def backward_propagation(x, y, hidden_output, output, wih, who, bih, bho, lr):
-    output_error = y - output
-    output_delta = output_error * sigmoid_derivative(output)
-    
-    hidden_error = np.dot(output_delta, who.T)
-    hidden_delta = hidden_error * sigmoid_derivative(hidden_output)
-    
-    who += np.dot(hidden_output.T, output_delta) * lr
-    bho += np.sum(output_delta, axis=0, keepdims=True) * lr
-    wih += np.dot(x.T, hidden_delta) * lr
-    bih += np.sum(hidden_delta, axis=0, keepdims=True) * lr
-
-input_size = 2
-hidden_size = 3
-output_size = 1
-
-wih = np.random.randn(input_size, hidden_size)
-bih = np.random.randn(1, hidden_size)
-who = np.random.randn(hidden_size, output_size)
-bho = np.random.randn(1, output_size)
-
-inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]]) #And Gate
-targets = np.array([[0], [0], [0], [1]])
-
-epochs = 1000
+epochs = 10000
 lr = 0.1
 
-for epoch in range(epochs):
-    hidden_output, output = forward_propagation(inputs, wih, bih, who, bho)
-    
-    backward_propagation(inputs, targets, hidden_output, output, wih, who, bih, bho, lr)
-    
-    loss = np.mean(np.square(targets - output))
+input_neurons = 2
+hidden_neurons = 5
+output_neurons = 1
 
-test_input = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-hidden_output, predictions = forward_propagation(test_input, wih, bih, who, bho)
-print("Predictions after training:")
-print(np.round(predictions).astype(int))
+w_ih = np.random.uniform(size=(input_neurons, hidden_neurons))
+w_ho = np.random.uniform(size=(hidden_neurons, output_neurons))
+b_h = np.random.uniform(size=(1, hidden_neurons))
+b_o = np.random.uniform(size=(1, output_neurons))
+
+for _ in range(epochs):
+    hidden_layer_input = np.dot(X, w_ih) + b_h
+    hidden_layer_output = sigmoid(hidden_layer_input)
+    
+    output_layer_input = np.dot(hidden_layer_output, w_ho) + b_o
+    output_layer_output = sigmoid(output_layer_input)
+    
+    error = y - output_layer_output
+    d_output = error * sigmoid_derivative(output_layer_output)
+    
+    error_hidden = d_output.dot(w_ho.T)
+    d_hidden = error_hidden * sigmoid_derivative(hidden_layer_output)
+    
+    w_ho += hidden_layer_output.T.dot(d_output) * lr
+    w_ih += X.T.dot(d_hidden) * lr
+    
+    b_o += np.sum(d_output, axis=0) * lr
+    b_h += np.sum(d_hidden, axis=0) * lr
+
+output_layer_output = np.round(output_layer_output).astype(int)
+
+print("Predicted Output:")
+print(output_layer_output)
