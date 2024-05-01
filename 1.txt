@@ -29,7 +29,7 @@ leaky_relu_y = leaky_relu(x)
 softmax_y = softmax(x)
 
 plt.figure(figsize=(15,10))
-plt.style.use('_mpl-gallery')
+plt.style.use('ggplot')
 
 plt.subplot(2,3,1)
 plt.plot(x,step_y,label = 'Step Function',color = 'red')
